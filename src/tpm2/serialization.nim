@@ -87,3 +87,33 @@ proc serialize*(u: uint64, buff: var StaticByteBuffer) =
     bytes.add x
 
   buff.writeBytes(bytes)
+
+proc deserialize*(u: var uint8, buff: var StaticByteBuffer) =
+  u = cast[uint8](buff.readBytes(1)[0]) # read 1 byte for the unsigned 8-bit integer (or byte!)
+
+proc deserialize*(u: var uint16, buff: var StaticByteBuffer) =
+  let data = buff.readBytes(2) # read 2 bytes for the unsigned 16-bit integer
+  var arr: array[2, uint8]
+
+  arr[0] = data[0]
+  arr[1] = data[1]
+
+  u = cast[uint16](arr)
+
+proc deserialize*(u: var uint32, buff: var StaticByteBuffer) =
+  let data = buff.readBytes(4) # read 4 bytes for the unsigned 32-bit integer
+  var arr: array[4, uint8]
+
+  for x in 0..4:
+    arr[x] = data[x]
+
+  u = cast[uint32](arr)
+
+proc deserialize*(u: var uint64, buff: var StaticByteBuffer) =
+  let data = buff.readBytes(8) # read 8 bytes for the unsigned 32-bit integer
+  var arr: array[8, uint8]
+
+  for x in 0..8:
+    arr[x] = data[x]
+
+  u = cast[uint64](arr)
